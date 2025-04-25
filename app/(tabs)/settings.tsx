@@ -1,7 +1,8 @@
 import { View, Text, StyleSheet, TouchableOpacity, Switch, ScrollView } from 'react-native';
-import { Bell, Lock, Moon, Sun, User, LogOut } from 'lucide-react-native';
+import { Bell, Lock, Moon, Sun, User, LogOut, ArrowLeft } from 'lucide-react-native';
 import { useAuth } from '@/context/AuthContext';
 import { useTheme } from '@/context/ThemeContext';
+import { router } from 'expo-router';
 
 export default function SettingsScreen() {
   const { user, signOut } = useAuth();
@@ -68,10 +69,26 @@ export default function SettingsScreen() {
       fontSize: 16,
       fontFamily: 'Poppins_600SemiBold',
     },
+    backButton: {
+      position: 'absolute',
+      top: 20,
+      left: 20,
+      zIndex: 1,
+      padding: 8,
+      borderRadius: 20,
+      backgroundColor: isDark ? '#404040' : '#f0f0f0',
+    },
   });
 
   return (
     <ScrollView style={styles.container}>
+      <TouchableOpacity 
+        style={styles.backButton} 
+        onPress={() => router.back()}
+      >
+        <ArrowLeft size={24} color={isDark ? '#fff' : '#1A1A1A'} />
+      </TouchableOpacity>
+
       <View style={styles.header}>
         <Text style={styles.title}>Settings</Text>
       </View>

@@ -4,7 +4,7 @@ import { Link } from 'expo-router';
 import { useAuth } from '@/context/AuthContext';
 
 export default function SignInScreen() {
-  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const { signIn, isLoading } = useAuth();
@@ -12,9 +12,13 @@ export default function SignInScreen() {
   async function handleSignIn() {
     try {
       setError('');
-      await signIn(email, password);
+      if (!phone || !password) {
+        setError('All fields are required');
+        return;
+      }
+      await signIn(phone, password);
     } catch (err) {
-      setError('Invalid email or password');
+      setError('Invalid phone number or password');
     }
   }
 
@@ -33,14 +37,14 @@ export default function SignInScreen() {
         {error ? <Text style={styles.error}>{error}</Text> : null}
 
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Email</Text>
+          <Text style={styles.label}>Phone Number</Text>
           <TextInput
             style={styles.input}
-            value={email}
-            onChangeText={setEmail}
-            placeholder="Enter your email"
+            value={phone}
+            onChangeText={setPhone}
+            placeholder="Enter your phone number"
+            keyboardType="phone-pad"
             autoCapitalize="none"
-            keyboardType="email-address"
           />
         </View>
 

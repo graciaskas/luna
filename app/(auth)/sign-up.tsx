@@ -5,7 +5,7 @@ import { useAuth } from '@/context/AuthContext';
 
 export default function SignUpScreen() {
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const { signUp, isLoading } = useAuth();
@@ -13,11 +13,15 @@ export default function SignUpScreen() {
   async function handleSignUp() {
     try {
       setError('');
-      if (!name || !email || !password) {
+      if (!name || !phone || !password) {
         setError('All fields are required');
         return;
       }
-      await signUp(email, password, name);
+      if (!/^\+?[1-9]\d{1,14}$/.test(phone)) {
+        setError('Please enter a valid phone number');
+        return;
+      }
+      await signUp(phone, password, name);
     } catch (err) {
       setError('Error creating account. Please try again.');
     }
@@ -48,14 +52,14 @@ export default function SignUpScreen() {
         </View>
 
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Email</Text>
+          <Text style={styles.label}>Phone Number</Text>
           <TextInput
             style={styles.input}
-            value={email}
-            onChangeText={setEmail}
-            placeholder="Enter your email"
+            value={phone}
+            onChangeText={setPhone}
+            placeholder="Enter your phone number"
+            keyboardType="phone-pad"
             autoCapitalize="none"
-            keyboardType="email-address"
           />
         </View>
 

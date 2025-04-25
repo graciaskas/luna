@@ -1,6 +1,8 @@
-import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useAuth } from '@/context/AuthContext';
 import { useTheme } from '@/context/ThemeContext';
+import { ArrowLeft } from 'lucide-react-native';
+import { router } from 'expo-router';
 
 export default function ProfileScreen() {
   const { user } = useAuth();
@@ -62,10 +64,26 @@ export default function ProfileScreen() {
       fontFamily: 'Poppins_600SemiBold',
       color: isDark ? '#fff' : '#1A1A1A',
     },
+    backButton: {
+      position: 'absolute',
+      top: 20,
+      left: 20,
+      zIndex: 1,
+      padding: 8,
+      borderRadius: 20,
+      backgroundColor: isDark ? '#404040' : '#f0f0f0',
+    },
   });
 
   return (
     <ScrollView style={styles.container}>
+      <TouchableOpacity 
+        style={styles.backButton} 
+        onPress={() => router.back()}
+      >
+        <ArrowLeft size={24} color={isDark ? '#fff' : '#1A1A1A'} />
+      </TouchableOpacity>
+
       <View style={styles.header}>
         <Image
           source={{ uri: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&auto=format&fit=crop&q=80' }}

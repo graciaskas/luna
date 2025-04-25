@@ -1,32 +1,44 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { ArrowLeft } from 'lucide-react-native';
+import { router } from 'expo-router';
+import { useTheme } from '@/context/ThemeContext';
 
 export default function InsightsScreen() {
+  const { isDark } = useTheme();
+
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Cycle Insights</Text>
+    <ScrollView style={[styles.container, isDark && styles.containerDark]}>
+      <TouchableOpacity 
+        style={[styles.backButton, isDark && styles.backButtonDark]} 
+        onPress={() => router.back()}
+      >
+        <ArrowLeft size={24} color={isDark ? '#fff' : '#1A1A1A'} />
+      </TouchableOpacity>
+
+      <View style={[styles.header, isDark && styles.headerDark]}>
+        <Text style={[styles.title, isDark && styles.titleDark]}>Cycle Insights</Text>
       </View>
 
-      <View style={styles.card}>
-        <Text style={styles.cardTitle}>Cycle Statistics</Text>
+      <View style={[styles.card, isDark && styles.cardDark]}>
+        <Text style={[styles.cardTitle, isDark && styles.cardTitleDark]}>Cycle Statistics</Text>
         <View style={styles.statsGrid}>
           <View style={styles.statItem}>
             <Text style={styles.statValue}>28</Text>
-            <Text style={styles.statLabel}>Average Cycle</Text>
+            <Text style={[styles.statLabel, isDark && styles.statLabelDark]}>Average Cycle</Text>
           </View>
           <View style={styles.statItem}>
             <Text style={styles.statValue}>5</Text>
-            <Text style={styles.statLabel}>Period Length</Text>
+            <Text style={[styles.statLabel, isDark && styles.statLabelDark]}>Period Length</Text>
           </View>
           <View style={styles.statItem}>
             <Text style={styles.statValue}>14</Text>
-            <Text style={styles.statLabel}>Luteal Phase</Text>
+            <Text style={[styles.statLabel, isDark && styles.statLabelDark]}>Luteal Phase</Text>
           </View>
         </View>
       </View>
 
-      <View style={styles.card}>
-        <Text style={styles.cardTitle}>Common Symptoms</Text>
+      <View style={[styles.card, isDark && styles.cardDark]}>
+        <Text style={[styles.cardTitle, isDark && styles.cardTitleDark]}>Common Symptoms</Text>
         <View style={styles.symptomsList}>
           {[
             { symptom: 'Cramps', frequency: '80%' },
@@ -34,16 +46,16 @@ export default function InsightsScreen() {
             { symptom: 'Bloating', frequency: '75%' },
             { symptom: 'Fatigue', frequency: '85%' },
           ].map((item) => (
-            <View key={item.symptom} style={styles.symptomItem}>
-              <Text style={styles.symptomText}>{item.symptom}</Text>
+            <View key={item.symptom} style={[styles.symptomItem, isDark && styles.symptomItemDark]}>
+              <Text style={[styles.symptomText, isDark && styles.symptomTextDark]}>{item.symptom}</Text>
               <Text style={styles.frequencyText}>{item.frequency}</Text>
             </View>
           ))}
         </View>
       </View>
 
-      <View style={styles.card}>
-        <Text style={styles.cardTitle}>Cycle Phases</Text>
+      <View style={[styles.card, isDark && styles.cardDark]}>
+        <Text style={[styles.cardTitle, isDark && styles.cardTitleDark]}>Cycle Phases</Text>
         <View style={styles.phasesList}>
           {[
             { phase: 'Menstrual', days: '1-5' },
@@ -51,9 +63,9 @@ export default function InsightsScreen() {
             { phase: 'Ovulation', days: '14' },
             { phase: 'Luteal', days: '15-28' },
           ].map((item) => (
-            <View key={item.phase} style={styles.phaseItem}>
-              <Text style={styles.phaseText}>{item.phase}</Text>
-              <Text style={styles.phaseDays}>Days {item.days}</Text>
+            <View key={item.phase} style={[styles.phaseItem, isDark && styles.phaseItemDark]}>
+              <Text style={[styles.phaseText, isDark && styles.phaseTextDark]}>{item.phase}</Text>
+              <Text style={[styles.phaseDays, isDark && styles.phaseDaysDark]}>Days {item.days}</Text>
             </View>
           ))}
         </View>
@@ -67,15 +79,24 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F8F9FA',
   },
+  containerDark: {
+    backgroundColor: '#1A1A1A',
+  },
   header: {
     padding: 20,
     paddingTop: 60,
     backgroundColor: '#fff',
   },
+  headerDark: {
+    backgroundColor: '#2D2D2D',
+  },
   title: {
     fontSize: 28,
     fontFamily: 'Poppins_600SemiBold',
     color: '#1A1A1A',
+  },
+  titleDark: {
+    color: '#fff',
   },
   card: {
     margin: 20,
@@ -88,11 +109,18 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 3,
   },
+  cardDark: {
+    backgroundColor: '#2D2D2D',
+    shadowColor: '#000',
+  },
   cardTitle: {
     fontSize: 20,
     fontFamily: 'Poppins_600SemiBold',
     color: '#1A1A1A',
     marginBottom: 15,
+  },
+  cardTitleDark: {
+    color: '#fff',
   },
   statsGrid: {
     flexDirection: 'row',
@@ -112,6 +140,9 @@ const styles = StyleSheet.create({
     color: '#666',
     marginTop: 4,
   },
+  statLabelDark: {
+    color: '#B0B0B0',
+  },
   symptomsList: {
     marginTop: 10,
   },
@@ -122,10 +153,16 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#f0f0f0',
   },
+  symptomItemDark: {
+    borderBottomColor: '#404040',
+  },
   symptomText: {
     fontSize: 16,
     fontFamily: 'Poppins_400Regular',
     color: '#1A1A1A',
+  },
+  symptomTextDark: {
+    color: '#fff',
   },
   frequencyText: {
     fontSize: 16,
@@ -140,15 +177,36 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#f0f0f0',
   },
+  phaseItemDark: {
+    borderBottomColor: '#404040',
+  },
   phaseText: {
     fontSize: 16,
     fontFamily: 'Poppins_600SemiBold',
     color: '#1A1A1A',
+  },
+  phaseTextDark: {
+    color: '#fff',
   },
   phaseDays: {
     fontSize: 14,
     fontFamily: 'Poppins_400Regular',
     color: '#666',
     marginTop: 4,
+  },
+  phaseDaysDark: {
+    color: '#B0B0B0',
+  },
+  backButton: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
+    zIndex: 1,
+    padding: 8,
+    borderRadius: 20,
+    backgroundColor: '#f0f0f0',
+  },
+  backButtonDark: {
+    backgroundColor: '#404040',
   },
 });
